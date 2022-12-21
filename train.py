@@ -79,8 +79,8 @@ def main(num_classes, class_names, lamda_size, lamda_off, alpha, beta, init_lr, 
 
 
 if __name__ == "__main__":
-    num_classes = 1
-    class_names = ["fish"]
+    num_classes = 20
+    class_names = ["person", "bird", "cat", "cow", "dog", "horse", "sheep", "aeroplane", "bicycle", "boat", "bus", "car", "motorbike", "train", "bottle", "chair", "diningtable", "pottedplant", "sofa", "tvmonitor"]
     lamda_size = 0.1  # weight of size loss
     lamda_off = 1  # weight of offset loss
     alpha = 2  # focal loss parameter
@@ -88,8 +88,8 @@ if __name__ == "__main__":
     init_lr = 0.001
     final_lr = 0.00001
     epoch = 500
-    batch_size = 2
-    data_root_dir = r"G:\fish_video\fish_data\data"
+    batch_size = 8
+    data_root_dir = r"F:\data\VOCdevkit\VOC2012\voc"
     img_size = (512, 512)
     sigma_iou_thresh = 0.7  # for getting gauss standard dev
     num_workers = 1

@@ -13,9 +13,9 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 
 img_size = (512, 512)  # (h, w)
-num_classes = 1
+num_classes = 20
 R = 4
-class_names = ["fish"]
+class_names = ["person", "bird", "cat", "cow", "dog", "horse", "sheep", "aeroplane", "bicycle", "boat", "bus", "car", "motorbike", "train", "bottle", "chair", "diningtable", "pottedplant", "sofa", "tvmonitor"]
 use_best_model = False
 peak_value_count = 100
 nms_iou_thresh = 0.01
@@ -104,7 +104,7 @@ def inference_one_img(model, data, orig_img):
 
 
 if __name__ == "__main__":
-    img_pth = r"G:\fish_video\fish_data\train2017\37.png"
+    img_pth = r"F:\data\VOCdevkit\VOC2012\voc\val\images\2008_000076.jpg"
     model = load_model()
     d, orig_img = load_one_img(img_pth)
     inference_one_img(model, d, orig_img)

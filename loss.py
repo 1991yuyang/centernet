@@ -51,7 +51,7 @@ class Loss(nn.Module):
             idx = t.norm(offset_gt_sample, p=1, dim=0) != 0
             l1_of_every_pix = t.norm(offset_output_sample - offset_gt_sample, p=1, dim=0)[idx]
             N = idx.sum()
-            total_loss += (l1_of_every_pix.sum() / N)
+            total_loss += (l1_of_every_pix.sum() / (N + 0.0001))
         offset_loss = total_loss / offset_output.size()[0]
         return offset_loss
 
@@ -63,6 +63,6 @@ class Loss(nn.Module):
             idx = t.norm(size_gt_sample, p=1, dim=0) != 0
             l1_of_every_pix = t.norm(size_output_sample - size_gt_sample, p=1, dim=0)[idx]
             N = idx.sum()
-            total_loss += (l1_of_every_pix.sum() / N)
+            total_loss += (l1_of_every_pix.sum() / (N + 0.0001))
         size_loss = total_loss / size_output.size()[0]
         return size_loss

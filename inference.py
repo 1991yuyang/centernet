@@ -15,10 +15,11 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 img_size = (512, 512)  # (h, w)
 num_classes = 20
 R = 4
+conf_thresh = 0.5
 class_names = ["person", "bird", "cat", "cow", "dog", "horse", "sheep", "aeroplane", "bicycle", "boat", "bus", "car", "motorbike", "train", "bottle", "chair", "diningtable", "pottedplant", "sofa", "tvmonitor"]
 use_best_model = False
 peak_value_count = 100
-nms_iou_thresh = 0.01
+nms_iou_thresh = 0.1
 pool_tool = nn.MaxPool2d(kernel_size=3, stride=1, padding=1)
 transformer = T.Compose([
     T.Resize(img_size),
@@ -64,7 +65,9 @@ def inference_one_img(model, data, orig_img):
         for class_idx in range(peak_value.shape[0]):
             peak_value_c = peak_value[class_idx]
             min_value = np.sort(peak_value_c.ravel())[::-1][peak_value_count - 1]
-            peak_point_indexs = peak_value_c >= min_value
+            peak_point_indexs = np.logical_and(peak_value_c >= min_value, peak_value_c >= conf_thresh)
+            if np.sum(peak_point_indexs) == 0:
+                continue
             x_offset = offset[0][peak_point_indexs]
             y_offset = offset[1][peak_point_indexs]
             w = size[0][peak_point_indexs]
@@ -104,7 +107,7 @@ def inference_one_img(model, data, orig_img):
 
 
 if __name__ == "__main__":
-    img_pth = r"F:\data\VOCdevkit\VOC2012\voc\val\images\2008_000076.jpg"
+    img_pth = r"F:\data\VOCdevkit\VOC2012\voc\train\images\2008_001729.jpg"
     model = load_model()
     d, orig_img = load_one_img(img_pth)
     inference_one_img(model, d, orig_img)
